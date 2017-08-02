@@ -12,7 +12,7 @@ def parser(someDocument):
     doc = nlp(someDocument)
     doc_id = uuid4().hex
     n=0
-    availSearchToken = ['word','lemma','pos','tag','dep_label','ent_type']
+    availSearchToken = ['word','lemma','pos','tag','dep_label','ent_type','raw_text']
     availReturnToken = ['word','lemma','pos','tag','dep_label','prefix',
                         'suffix','is_oov','like_url','like_num','like_email',
                         'is_stop','ent_type']

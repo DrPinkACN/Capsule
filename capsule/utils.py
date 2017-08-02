@@ -73,7 +73,7 @@ class usableText:
         matches=[]
         for sent in self.document['sents']:
             if sent_no==None or sent['sent_no']==sent_no:
-                if search_token!='word':
+                if search_token!='raw_text':
                     t2match=' '.join(sent[search_token])
                 else:
                     t2match=sent['raw_text']
