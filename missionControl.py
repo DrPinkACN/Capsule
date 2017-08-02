@@ -17,7 +17,7 @@ for n,i in enumerate(docs):
         pass
 
 sws=[]
-with open(r'stopWords.txt','r') as f:
+with open(r'data/stopWords.txt','r') as f:
     for i in f.readlines():
         sws.append(re.sub(r'\r?\n?','',i))
 
