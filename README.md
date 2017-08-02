@@ -110,7 +110,7 @@ These spans can be captured as extity candidates, but before that, one may want 
   'spans': [(19, 20), (118, 124), (135, 147), (153, 161), (184, 189)],
   'token_spans': [(6, 7), (25, 26), (29, 30), (32, 33), (37, 38)]}]
 
->>>udoc.showTokens(udoc.compose(('z',(r'(ADJ)*(\s?NOUN)+','pos'),(r'water','lemma'))),return_token='word')
+>>> udoc.showTokens(udoc.compose(('z',(r'(ADJ)*(\s?NOUN)+','pos'),(r'water','lemma'))),return_token='word')
   [{'doc_id': '1db301753abb4a3bb27d6e5085d8173f',
   'return_token': [{'lead': [], 'match': ['%'], 'trail': []},
    {'lead': [], 'match': ['source'], 'trail': []},
