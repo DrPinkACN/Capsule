@@ -5,7 +5,7 @@ from capsule.nlpDaemon import parser
 from capsule import usableText
 from tqdm import tqdm #progress bar
 
-with open('3000DrugLabels.pkl','rb') as fn:
+with open('data/3000DrugLabels.pkl','rb') as fn:
     docs=pickle.load(fn)
 
 utext=[]
