@@ -3,6 +3,8 @@
 # Capsule
 Some tools for NLP, candidate extraction, annotation, and serialization built on top of spaCy.
 
+Inspired by useful stuff in [snorkel](https://github.com/HazyResearch/snorkel).
+
 ***This library is very much a work in progress. Use at your own risk!***
 
 ## Requirements
