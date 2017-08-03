@@ -83,7 +83,7 @@ class usableText:
                                  'spans':[],
                                  'token_spans':[]}
                     for fi in pat.finditer(t2match):
-                        if search_token=='word':
+                        if search_token=='raw_text':
                             tokenStart=[i for i,idx in enumerate(sent['idx']) if idx<=fi.start()][-1]
                             tokenEnd=[i for i,idx in enumerate(sent['idx']) if idx<=fi.end()][-1]
                         else:
