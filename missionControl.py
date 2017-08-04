@@ -9,7 +9,8 @@ with open('data/DrugLabels.pkl','rb') as fn:
     docs=pickle.load(fn)
 
 utext=[]
-for n,i in enumerate(docs):
+print('Parsing documents into usableText objects...')
+for n,i in enumerate(tqdm(docs)):
     try:
         utext.append(usableText(*parser(i)))
     except:
@@ -36,31 +37,36 @@ sws+=list(stopwordAdd)+list(relationshipWords)
 sws=list(set(sws))
 
 ## using the lemma for the stop words:
-import spacy
-nlp=spacy.load('en')
-swslemma=set()
-for i in nlp(' '.join(sws)):
-    swslemma.add(i.lemma_)
-swslemma=list(swslemma)
+#import spacy
+#nlp=spacy.load('en')
+#swslemma=set()
+#for i in nlp(' '.join(sws)):
+#    swslemma.add(i.lemma_)
+#swslemma=list(swslemma)
 
 ####Condition Candidate Extractor (CE)########
 cond_pos_regx=r'\b((ADJ\s(PART|CONJ)?\s?)?(ADJ)\s)?(NOUN|PROPN)((\s(NUM))?\s(NOUN|PROPN))*\b'
-sws_regx=r'\b('+r'|'.join(swslemma)+r')\b'
+sws_regx=r'\b('+r'|'.join(sws)+r')\b'
 
-CEcondition=('z',(cond_pos_regx,'pos'),(sws_regx,'lemma'))
+CEcondition=('z',(cond_pos_regx,'pos'),(sws_regx,'word'))
 
 ####Drug CE##########
 drug_pos_regx=r'\b((NOUN|PROPN|NUM|ADJ)\s?)*(CONJ\s)?((NOUN|PROPN|NUM)\s?)+((PUNCT)(\s(NOUN|PROPN|NUM))+)?\b'
-CEdrug=('z',(drug_pos_regx,'pos'),(sws_regx,'lemma'))
+CEdrug=('z',(drug_pos_regx,'pos'),(sws_regx,'word'))
 
 ##extraction and adding to usabletext##
+print('Extracting candidates...')
 for i,u in enumerate(tqdm(utext)):
     utext[i].entCandidateClear()
-    utext[i].entCandidateAdd(u.compose(CEcondition),'CONDITION')
-    utext[i].entCandidateAdd(u.compose(CEdrug),'DRUG')
+    try:
+        utext[i].entCandidateAdd(u.compose(CEcondition),'CONDITION')
+        utext[i].entCandidateAdd(u.compose(CEdrug),'DRUG')
+    except:
+        utext[i].entCandidateClear()
+        pass
 
 ##add a knowledge model##
-for i,u in enumerate(tqdm(utext)):
+for i,u in enumerate(utext):
     utext[i].knowModelAdd('treatment', 'drug', 'condition')
 
 ## do some annotation
@@ -73,7 +79,9 @@ akmutext=tripleKM(utext, 'phil','treatment',randomize=True)
 
 #serialize data
 from capsule.serialization import textSerializeModel as tsm
-tsm(utext,'treatment')
+print('Gathering features...')
+for i,u in enumerate(tqdm(utext)):
+    utext[i].addfeatures(tsm(u,'treatment'))
 
 ## grab annotations for training spacy ner
 aCands=[]
